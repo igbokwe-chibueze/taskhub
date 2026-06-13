@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
+    "postinstall": "prisma generate",
     "auth:generate": "npx auth@latest generate --config lib/auth/auth.ts --output prisma/auth-schema.generated.prisma --yes",
     "lint": "eslint"
   },
