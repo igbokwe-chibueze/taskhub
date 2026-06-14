@@ -1,6 +1,6 @@
-# TaskHub — Build Roadmap
+# TaskHub - Build Roadmap
 
-> Companion document to `AGENTS.md` and `docs/PRODUCT-OVERVIEW.md`. Steps are executed **one at a time, in order**. Each step should stay within its own scope — do not implement functionality belonging to a later step, even if it seems convenient to bundle it in.
+> Companion document to `AGENTS.md` and `docs/PRODUCT-OVERVIEW.md`. Steps are executed **one at a time, in order**. Each step should stay within its own scope - do not implement functionality belonging to a later step, even if it seems convenient to bundle it in.
 >
 > Update the checkboxes below as each step is completed.
 
@@ -17,18 +17,18 @@
 - [x] **5. Layout/navbar**
   Root layout and navbar with auth-aware links (sign in/up vs. dashboard/sign out), built with shadcn/ui.
 
+- [x] **6. Landing page**
+  Public marketing page at `/` - product overview and CTAs linking to sign up, sign in, and the users page.
+
 ---
 
 ## Remaining
-
-- [ ] **6. Landing page**
-  Public marketing page at `/` — product overview and CTAs linking to sign up, sign in, and the users page.
 
 - [ ] **7. Public users page**
   `/users` route showing user name/email, total todo count (via a Prisma aggregation through a repository), and optional join date. No sensitive data.
 
 - [ ] **8. Protected todos page**
-  `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states — no CRUD yet.
+  `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states - no CRUD yet.
 
 - [ ] **9. Create todo**
   Create Server Action + form (Dialog) using React Hook Form + Zod, writing through the todos repository, with ownership taken from the session.
