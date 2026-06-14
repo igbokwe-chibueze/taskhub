@@ -21,6 +21,8 @@ type AuthActionResult<TField extends string> =
 type SignInField = keyof SignInInput;
 type SignUpField = keyof SignUpInput;
 
+// React Hook Form expects errors keyed by field name; keep that translation
+// here so client forms do not need to understand Zod's issue format.
 function getFieldErrors<TField extends string>(
   error: z.ZodError,
 ): Partial<Record<TField, string>> {
@@ -48,6 +50,8 @@ function getAuthErrorMessage(error: unknown, fallback: string) {
 export async function signInAction(
   input: SignInInput,
 ): Promise<AuthActionResult<SignInField>> {
+  // Server Actions are the trust boundary, so validate again even though the
+  // client form already runs the same schema for immediate feedback.
   const parsedInput = signInSchema.safeParse(input);
 
   if (!parsedInput.success) {
@@ -80,6 +84,8 @@ export async function signInAction(
 export async function signUpAction(
   input: SignUpInput,
 ): Promise<AuthActionResult<SignUpField>> {
+  // Keep sign-up validation server-side as well so direct action calls cannot
+  // bypass the client form rules.
   const parsedInput = signUpSchema.safeParse(input);
 
   if (!parsedInput.success) {
@@ -111,6 +117,8 @@ export async function signUpAction(
 }
 
 export async function signOutAction() {
+  // Sign-out only depends on the current session cookie; the redirect keeps the
+  // user on an explicit auth route after the cookie is cleared.
   await auth.api.signOut({
     headers: await headers(),
   });

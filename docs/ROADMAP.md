@@ -11,16 +11,15 @@
 - [x] **1. Project setup**
 - [x] **2. Prisma setup**
 - [x] **3. Better Auth setup**
+- [x] **4. Auth pages**
+  Sign up, sign in, and sign out pages/forms in `features/auth`, using the Better Auth client, Server Actions, and React Hook Form + Zod validation.
+
+- [x] **5. Layout/navbar**
+  Root layout and navbar with auth-aware links (sign in/up vs. dashboard/sign out), built with shadcn/ui.
 
 ---
 
 ## Remaining
-
-- [ ] **4. Auth pages**
-  Sign up, sign in, and sign out pages/forms in `features/auth`, using the Better Auth client, Server Actions, and React Hook Form + Zod validation.
-
-- [ ] **5. Layout/navbar**
-  Root layout and navbar with auth-aware links (sign in/up vs. dashboard/sign out), built with shadcn/ui.
 
 - [ ] **6. Landing page**
   Public marketing page at `/` — product overview and CTAs linking to sign up, sign in, and the users page.

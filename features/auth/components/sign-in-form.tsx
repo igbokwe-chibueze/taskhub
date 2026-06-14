@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { signInAction } from "@/features/auth/actions/auth.actions";
 import { signInSchema, type SignInInput } from "@/features/auth/schemas/sign-in.schema";
@@ -25,10 +26,15 @@ export function SignInForm() {
   async function onSubmit(values: SignInInput) {
     setFormMessage(null);
 
+    // The inline form error remains the accessible source of truth; the toast
+    // gives fast global feedback for users whose focus is on the submit action.
     const result = await signInAction(values);
 
     if (!result.ok) {
       setFormMessage(result.message);
+      toast.error("Sign-in failed", {
+        description: result.message,
+      });
 
       for (const [field, message] of Object.entries(result.fieldErrors ?? {})) {
         form.setError(field as keyof SignInInput, { message });

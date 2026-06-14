@@ -58,6 +58,8 @@ Server Actions are the preferred — and default — mechanism for all mutations
 
 Do not create API routes unless explicitly instructed by the project owner.
 
+**Explicit exception:** Better Auth's required route handler at `app/api/auth/[...all]/route.ts` is allowed. Treat it as framework integration plumbing, not application business logic. Do not add other API routes unless the project owner explicitly approves them.
+
 ### 3.3 Repository Pattern (Mandatory)
 
 All database access must go through repositories. Prisma must **never** be called directly from components, views, hooks, or actions — only repositories may import and use Prisma.
@@ -72,6 +74,8 @@ View → Action → Repository → Prisma → Database
 
 The `app/` directory exists only for routing. Route files contain **only** re-exports — no JSX, no business logic, no Prisma calls, no auth logic.
 
+The generated Prisma client currently lives at `app/generated/prisma`. Leave it there unless the project owner explicitly decides to move it. Do not treat generated Prisma client files as route files.
+
 ```ts
 export { TodosView as default }
   from "@/features/todos/views/todos-view";
@@ -81,8 +85,10 @@ export { TodosView as default }
 
 ## 4. Project Structure
 
+This project intentionally uses a **root-based structure**, not a `src/` directory. Do not introduce `src/` unless the project owner explicitly asks for a migration. The structure below describes the intended root-level layout even where older notes mention `src/`.
+
 ```txt
-src/
+(project root)/
 ├── app/
 │
 ├── components/
@@ -130,6 +136,10 @@ src/
 ```
 
 Only create folders that are actually needed for the current feature work — never create speculative folders "for later."
+
+Use `components/shared/` for truly cross-feature UI such as the app navbar. Feature-specific UI belongs inside the owning feature's `components/` folder.
+
+If a needed script, folder, or dependency is missing, create or install it as part of the task, but keep the scope narrow and explain the reason in the final handoff.
 
 ---
 
@@ -209,6 +219,14 @@ update-todo.schema.ts
 
 The app should be fast, responsive, mobile-friendly, accessible, modern, and easy to understand. Use shadcn/ui components wherever appropriate (Dialog, Field, Input, Textarea, Card, Tabs, Badge, Dropdown Menu, Button, etc.).
 
+Use and ensure adequate loading and transition states across the app. Navigation across screens should feel instant whenever possible:
+
+- Prefer `Link` for internal navigation so Next.js can prefetch routes.
+- Add route-level `loading.tsx` files, Suspense boundaries, skeletons, disabled states, and pending states where data fetching or mutations could otherwise feel stalled.
+- Forms and Server Action flows must communicate progress clearly with loading labels, disabled submit buttons, and accessible error states.
+- Use toast notifications for short-lived global feedback such as successful mutations, failed actions, or important status updates. Toasts should complement inline accessible errors, not replace them.
+- Do not leave blank screens during async work.
+
 ---
 
 ## 9. AI Agent Rules
@@ -222,12 +240,13 @@ The app should be fast, responsive, mobile-friendly, accessible, modern, and eas
 - Use repositories for all database access.
 - Use shadcn/ui components.
 - Keep route files as one-line re-exports.
-- Add meaningful comments explaining *why*, not just *what*.
+- Add adequate and extensive teaching-style comments where they help future readers understand the architecture, security model, data flow, or non-obvious implementation details.
+- Include useful inline comments for important logic branches, validation/security boundaries, repository interactions, and loading/transition behavior.
 - Maintain separation of concerns.
 
 ### Never
 
-- Use API routes unless explicitly requested.
+- Use API routes unless explicitly requested, except for Better Auth's required `app/api/auth/[...all]/route.ts` handler.
 - Use Prisma outside repositories.
 - Use the `any` type.
 - Put business logic in route files.
@@ -279,7 +298,7 @@ npm run start
 npm run lint
 
 # Type-check
-npx tsc --noEmit
+npm run type-check
 
 # Format (if Prettier is configured)
 npm run format
