@@ -20,12 +20,12 @@
 - [x] **6. Landing page**
   Public marketing page at `/` - product overview and CTAs linking to sign up, sign in, and the users page.
 
+- [x] **7. Public users page**
+  `/users` route showing user name/email, total todo count (via a Prisma aggregation through a repository), and optional join date. No sensitive data.
+
 ---
 
 ## Remaining
-
-- [ ] **7. Public users page**
-  `/users` route showing user name/email, total todo count (via a Prisma aggregation through a repository), and optional join date. No sensitive data.
 
 - [ ] **8. Protected todos page**
   `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states - no CRUD yet.
