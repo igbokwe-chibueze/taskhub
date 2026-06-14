@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { signUpAction } from "@/features/auth/actions/auth.actions";
 import { signUpSchema, type SignUpInput } from "@/features/auth/schemas/sign-up.schema";
@@ -27,10 +28,15 @@ export function SignUpForm() {
   async function onSubmit(values: SignUpInput) {
     setFormMessage(null);
 
+    // The inline form error remains the accessible source of truth; the toast
+    // gives fast global feedback for users whose focus is on the submit action.
     const result = await signUpAction(values);
 
     if (!result.ok) {
       setFormMessage(result.message);
+      toast.error("Account creation failed", {
+        description: result.message,
+      });
 
       for (const [field, message] of Object.entries(result.fieldErrors ?? {})) {
         form.setError(field as keyof SignUpInput, { message });
