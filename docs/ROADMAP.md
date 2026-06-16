@@ -44,14 +44,17 @@
 - [x] **14. Complete todos**
   Complete/incomplete toggle action, with ownership verification, optimistic UI feedback, and a Completed tab for finished todos.
 
-- [ ] **15. Security review**
+- [x] **15. User themes**
+  Per-user color theme preferences and light/dark mode toggle, persisted to the authenticated user and applied on first render.
+
+- [ ] **16. Security review**
   Audit every Server Action against the 5-step checklist in `AGENTS.md` (auth check, Zod validation, ownership verification, repository-only DB access, typed return). Treat this as an audit pass, not the only enforcement point.
 
-- [ ] **16. UI polish**
+- [ ] **17. UI polish**
   Responsive/mobile pass, accessibility check, loading/empty/error states across all pages.
 
-- [ ] **17. Testing**
+- [ ] **18. Testing**
   Set up the test framework (e.g. Vitest for repositories/schemas/actions, Playwright for auth + todos E2E flows) and write coverage for core flows.
 
-- [ ] **18. Deployment prep**
+- [ ] **19. Deployment prep**
   Environment variables, production migrations, build checks, and deployment platform configuration.

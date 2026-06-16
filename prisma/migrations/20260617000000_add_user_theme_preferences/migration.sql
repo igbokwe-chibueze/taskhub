@@ -1,0 +1,3 @@
+ALTER TABLE "user"
+ADD COLUMN "themeColor" TEXT NOT NULL DEFAULT 'neutral',
+ADD COLUMN "themeMode" TEXT NOT NULL DEFAULT 'light';
