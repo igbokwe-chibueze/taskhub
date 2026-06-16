@@ -27,7 +27,7 @@
 
 ## Remaining
 
-- [ ] **8. Protected todos page**
+- [x] **8. Protected todos page**
   `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states - no CRUD yet.
 
 - [ ] **9. Create todo**
