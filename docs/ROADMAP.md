@@ -6,7 +6,7 @@
 
 ---
 
-## Completed
+## Build Steps
 
 - [x] **1. Project setup**
 - [x] **2. Prisma setup**
@@ -22,10 +22,6 @@
 
 - [x] **7. Public users page**
   `/users` route showing user name/email, total todo count (via a Prisma aggregation through a repository), and optional join date. No sensitive data.
-
----
-
-## Remaining
 
 - [x] **8. Protected todos page**
   `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states - no CRUD yet.
