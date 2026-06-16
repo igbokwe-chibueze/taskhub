@@ -30,16 +30,16 @@
 - [x] **8. Protected todos page**
   `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states - no CRUD yet.
 
-- [ ] **9. Create todo**
+- [x] **9. Create todo**
   Create Server Action + form (Dialog) using React Hook Form + Zod, writing through the todos repository, with ownership taken from the session.
 
-- [ ] **10. List todos**
+- [x] **10. List todos**
   Read the authenticated user's todos via the repository and render them in the All Todos tab.
 
-- [ ] **11. Favorite tabs**
+- [x] **11. Favorite tabs**
   Favorite/unfavorite toggle action, and Favorites tab filtering to show only favorited todos.
 
-- [ ] **12. Edit todo**
+- [x] **12. Edit todo**
   Update Server Action + edit form/dialog, with ownership verification.
 
 - [ ] **13. Delete todo**
