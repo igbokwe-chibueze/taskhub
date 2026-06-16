@@ -6,6 +6,7 @@ import { z } from "zod";
 import { getCurrentSession } from "@/lib/auth/session";
 import {
   createTodo,
+  deleteTodo,
   getTodoById,
   updateTodo,
   updateTodoFavorite,
@@ -22,6 +23,10 @@ import {
   updateTodoSchema,
   type UpdateTodoInput,
 } from "@/features/todos/schemas/update-todo.schema";
+import {
+  deleteTodoSchema,
+  type DeleteTodoInput,
+} from "@/features/todos/schemas/delete-todo.schema";
 
 type CreateTodoField = keyof CreateTodoInput;
 type UpdateTodoField = keyof UpdateTodoInput;
@@ -53,6 +58,15 @@ export type UpdateTodoActionResult =
       ok: false;
       message: string;
       fieldErrors?: Partial<Record<UpdateTodoField, string>>;
+    };
+
+export type DeleteTodoActionResult =
+  | {
+      ok: true;
+    }
+  | {
+      ok: false;
+      message: string;
     };
 
 function getFieldErrors<TField extends string>(
@@ -200,6 +214,50 @@ export async function updateTodoAction(
     title: parsedInput.data.title,
     description: parsedInput.data.description,
   });
+
+  revalidatePath("/todos");
+
+  return {
+    ok: true,
+  };
+}
+
+export async function deleteTodoAction(
+  input: DeleteTodoInput,
+): Promise<DeleteTodoActionResult> {
+  // 1. Authenticate before validating ownership or deleting data.
+  const session = await getCurrentSession();
+
+  if (!session) {
+    return {
+      ok: false,
+      message: "You must be signed in to delete todos.",
+    };
+  }
+
+  // 2. Validate the deletion target at the Server Action boundary.
+  const parsedInput = deleteTodoSchema.safeParse(input);
+
+  if (!parsedInput.success) {
+    return {
+      ok: false,
+      message: "Todo could not be deleted.",
+    };
+  }
+
+  // 3. Verify ownership before deleting. Missing todos and another user's
+  // todos intentionally return the same message to avoid leaking existence.
+  const todo = await getTodoById(parsedInput.data.todoId);
+
+  if (!todo || todo.userId !== session.user.id) {
+    return {
+      ok: false,
+      message: "Todo not found.",
+    };
+  }
+
+  // 4-5. Repository performs the Prisma delete; the action returns a typed result.
+  await deleteTodo(parsedInput.data.todoId);
 
   revalidatePath("/todos");
 

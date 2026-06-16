@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DeleteTodoDialog } from "@/features/todos/components/delete-todo-dialog";
 import { EditTodoDialog } from "@/features/todos/components/edit-todo-dialog";
 import { TodoFavoriteToggle } from "@/features/todos/components/todo-favorite-toggle";
 import type { Todo } from "@/features/todos/types/todo";
@@ -42,6 +43,7 @@ export function TodosList({ todos }: { todos: Todo[] }) {
                 </Badge>
                 <EditTodoDialog todo={todo} />
                 <TodoFavoriteToggle todoId={todo.id} favorite={todo.favorite} />
+                <DeleteTodoDialog todo={todo} />
               </div>
             </div>
           </CardHeader>

@@ -38,7 +38,7 @@
 - [x] **12. Edit todo**
   Update Server Action + edit form/dialog, with ownership verification.
 
-- [ ] **13. Delete todo**
+- [x] **13. Delete todo**
   Delete Server Action + confirmation dialog, with ownership verification.
 
 - [ ] **14. Security review**

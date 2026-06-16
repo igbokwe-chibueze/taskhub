@@ -81,3 +81,11 @@ export async function updateTodo(input: UpdateTodoRepositoryInput): Promise<Todo
     },
   });
 }
+
+export async function deleteTodo(todoId: string): Promise<Todo> {
+  return prisma.todo.delete({
+    where: {
+      id: todoId,
+    },
+  });
+}
