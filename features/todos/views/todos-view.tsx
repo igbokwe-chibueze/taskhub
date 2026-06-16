@@ -1,4 +1,4 @@
-import { Inbox, LayoutDashboard, Star } from "lucide-react";
+import { CheckCircle2, Inbox, LayoutDashboard, Star } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CreateTodoDialog } from "@/features/todos/components/create-todo-dialog";
+import { TodosList } from "@/features/todos/components/todos-list";
+import { getTodosByUserId } from "@/features/todos/repositories/todos.repository";
 import { getCurrentSession } from "@/lib/auth/session";
 
 function EmptyTodosState({
@@ -43,6 +46,12 @@ export async function TodosView() {
     redirect("/auth/sign-in");
   }
 
+  // Step 10 adds the authenticated read path. The repository scopes the query
+  // to this session user so no other user's todos can be returned.
+  const todos = await getTodosByUserId(session.user.id);
+  const favoriteTodos = todos.filter((todo) => todo.favorite);
+  const completedTodos = todos.filter((todo) => todo.completed);
+
   return (
     <main className="flex flex-1 flex-col bg-muted/30">
       <section className="border-b bg-background">
@@ -61,6 +70,7 @@ export async function TodosView() {
                 one protected dashboard.
               </p>
             </div>
+            <CreateTodoDialog />
           </div>
         </div>
       </section>
@@ -74,6 +84,10 @@ export async function TodosView() {
                 <Star aria-hidden="true" />
                 Favorites
               </TabsTrigger>
+              <TabsTrigger value="completed">
+                <CheckCircle2 aria-hidden="true" />
+                Completed
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -82,15 +96,20 @@ export async function TodosView() {
               <CardHeader>
                 <CardTitle>All Todos</CardTitle>
                 <CardDescription>
-                  Every todo you create will appear here once CRUD is added in the
-                  next roadmap steps.
+                  {todos.length === 1
+                    ? "1 todo in your private workspace."
+                    : `${todos.length} todos in your private workspace.`}
                 </CardDescription>
               </CardHeader>
             </Card>
-            <EmptyTodosState
-              title="No todos yet"
-              description="The dashboard shell is ready. The create flow comes next, so this space will soon hold your personal todo list."
-            />
+            {todos.length > 0 ? (
+              <TodosList todos={todos} />
+            ) : (
+              <EmptyTodosState
+                title="No todos yet"
+                description="Create your first todo from the button above. It will appear here immediately after it is saved."
+              />
+            )}
           </TabsContent>
 
           <TabsContent value="favorites">
@@ -98,15 +117,41 @@ export async function TodosView() {
               <CardHeader>
                 <CardTitle>Favorites</CardTitle>
                 <CardDescription>
-                  Favorited todos will be collected here after the favorite action is
-                  implemented.
+                  {favoriteTodos.length === 1
+                    ? "1 favorited todo in your private workspace."
+                    : `${favoriteTodos.length} favorited todos in your private workspace.`}
                 </CardDescription>
               </CardHeader>
             </Card>
-            <EmptyTodosState
-              title="No favorite todos yet"
-              description="Once todos can be favorited, your highest-priority items will appear in this tab."
-            />
+            {favoriteTodos.length > 0 ? (
+              <TodosList todos={favoriteTodos} />
+            ) : (
+              <EmptyTodosState
+                title="No favorite todos yet"
+                description="Mark important todos as favorites from the All Todos tab, then they will appear here."
+              />
+            )}
+          </TabsContent>
+
+          <TabsContent value="completed">
+            <Card className="mb-4 bg-background">
+              <CardHeader>
+                <CardTitle>Completed</CardTitle>
+                <CardDescription>
+                  {completedTodos.length === 1
+                    ? "1 completed todo in your private workspace."
+                    : `${completedTodos.length} completed todos in your private workspace.`}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            {completedTodos.length > 0 ? (
+              <TodosList todos={completedTodos} />
+            ) : (
+              <EmptyTodosState
+                title="No completed todos yet"
+                description="Mark todos complete from any tab, then your finished work will appear here."
+              />
+            )}
           </TabsContent>
         </Tabs>
       </section>

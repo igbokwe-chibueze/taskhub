@@ -6,7 +6,7 @@
 
 ---
 
-## Completed
+## Build Steps
 
 - [x] **1. Project setup**
 - [x] **2. Prisma setup**
@@ -23,36 +23,35 @@
 - [x] **7. Public users page**
   `/users` route showing user name/email, total todo count (via a Prisma aggregation through a repository), and optional join date. No sensitive data.
 
----
-
-## Remaining
-
 - [x] **8. Protected todos page**
   `/todos` route scaffold with route protection (redirect unauthenticated users to `/auth/sign-in`) and the Tabs shell (All / Favorites) with empty states - no CRUD yet.
 
-- [ ] **9. Create todo**
+- [x] **9. Create todo**
   Create Server Action + form (Dialog) using React Hook Form + Zod, writing through the todos repository, with ownership taken from the session.
 
-- [ ] **10. List todos**
+- [x] **10. List todos**
   Read the authenticated user's todos via the repository and render them in the All Todos tab.
 
-- [ ] **11. Favorite tabs**
+- [x] **11. Favorite tabs**
   Favorite/unfavorite toggle action, and Favorites tab filtering to show only favorited todos.
 
-- [ ] **12. Edit todo**
+- [x] **12. Edit todo**
   Update Server Action + edit form/dialog, with ownership verification.
 
-- [ ] **13. Delete todo**
+- [x] **13. Delete todo**
   Delete Server Action + confirmation dialog, with ownership verification.
 
-- [ ] **14. Security review**
+- [x] **14. Complete todos**
+  Complete/incomplete toggle action, with ownership verification, optimistic UI feedback, and a Completed tab for finished todos.
+
+- [ ] **15. Security review**
   Audit every Server Action against the 5-step checklist in `AGENTS.md` (auth check, Zod validation, ownership verification, repository-only DB access, typed return). Treat this as an audit pass, not the only enforcement point.
 
-- [ ] **15. UI polish**
+- [ ] **16. UI polish**
   Responsive/mobile pass, accessibility check, loading/empty/error states across all pages.
 
-- [ ] **16. Testing**
+- [ ] **17. Testing**
   Set up the test framework (e.g. Vitest for repositories/schemas/actions, Playwright for auth + todos E2E flows) and write coverage for core flows.
 
-- [ ] **17. Deployment prep**
+- [ ] **18. Deployment prep**
   Environment variables, production migrations, build checks, and deployment platform configuration.
