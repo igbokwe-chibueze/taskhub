@@ -1,4 +1,4 @@
-import { CalendarDays, Circle } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -8,8 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { DeleteTodoDialog } from "@/features/todos/components/delete-todo-dialog";
-import { EditTodoDialog } from "@/features/todos/components/edit-todo-dialog";
+import { TodoActionsMenu } from "@/features/todos/components/todo-actions-menu";
+import { TodoCompletedToggle } from "@/features/todos/components/todo-completed-toggle";
 import { TodoFavoriteToggle } from "@/features/todos/components/todo-favorite-toggle";
 import type { Todo } from "@/features/todos/types/todo";
 
@@ -28,8 +28,10 @@ export function TodosList({ todos }: { todos: Todo[] }) {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
                 <CardTitle className="flex items-center gap-2">
-                  <Circle aria-hidden="true" className="size-4 text-muted-foreground" />
-                  <span className="truncate">{todo.title}</span>
+                  <TodoCompletedToggle todoId={todo.id} completed={todo.completed} />
+                  <span className={todo.completed ? "truncate text-muted-foreground line-through" : "truncate"}>
+                    {todo.title}
+                  </span>
                 </CardTitle>
                 <CardDescription className="mt-2 flex items-center gap-1.5">
                   <CalendarDays aria-hidden="true" className="size-3.5" />
@@ -41,9 +43,8 @@ export function TodosList({ todos }: { todos: Todo[] }) {
                 <Badge variant="outline">
                   {todo.completed ? "Complete" : "Open"}
                 </Badge>
-                <EditTodoDialog todo={todo} />
                 <TodoFavoriteToggle todoId={todo.id} favorite={todo.favorite} />
-                <DeleteTodoDialog todo={todo} />
+                <TodoActionsMenu todo={todo} />
               </div>
             </div>
           </CardHeader>

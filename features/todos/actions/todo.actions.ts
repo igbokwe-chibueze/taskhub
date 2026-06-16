@@ -9,6 +9,7 @@ import {
   deleteTodo,
   getTodoById,
   updateTodo,
+  updateTodoCompleted,
   updateTodoFavorite,
 } from "@/features/todos/repositories/todos.repository";
 import {
@@ -19,6 +20,10 @@ import {
   updateTodoFavoriteSchema,
   type UpdateTodoFavoriteInput,
 } from "@/features/todos/schemas/update-todo-favorite.schema";
+import {
+  updateTodoCompletedSchema,
+  type UpdateTodoCompletedInput,
+} from "@/features/todos/schemas/update-todo-completed.schema";
 import {
   updateTodoSchema,
   type UpdateTodoInput,
@@ -42,6 +47,15 @@ export type CreateTodoActionResult =
     };
 
 export type UpdateTodoFavoriteActionResult =
+  | {
+      ok: true;
+    }
+  | {
+      ok: false;
+      message: string;
+    };
+
+export type UpdateTodoCompletedActionResult =
   | {
       ok: true;
     }
@@ -164,6 +178,52 @@ export async function updateTodoFavoriteAction(
   await updateTodoFavorite({
     todoId: parsedInput.data.todoId,
     favorite: parsedInput.data.favorite,
+  });
+
+  revalidatePath("/todos");
+
+  return {
+    ok: true,
+  };
+}
+
+export async function updateTodoCompletedAction(
+  input: UpdateTodoCompletedInput,
+): Promise<UpdateTodoCompletedActionResult> {
+  // 1. Authenticate first so ownership can be checked against a trusted user.
+  const session = await getCurrentSession();
+
+  if (!session) {
+    return {
+      ok: false,
+      message: "You must be signed in to update todos.",
+    };
+  }
+
+  // 2. Validate the todo id and target completed state before any write.
+  const parsedInput = updateTodoCompletedSchema.safeParse(input);
+
+  if (!parsedInput.success) {
+    return {
+      ok: false,
+      message: "Todo status could not be updated.",
+    };
+  }
+
+  // 3. Verify ownership before allowing the mutation.
+  const todo = await getTodoById(parsedInput.data.todoId);
+
+  if (!todo || todo.userId !== session.user.id) {
+    return {
+      ok: false,
+      message: "Todo not found.",
+    };
+  }
+
+  // 4-5. Repository performs the Prisma write; the action returns a typed result.
+  await updateTodoCompleted({
+    todoId: parsedInput.data.todoId,
+    completed: parsedInput.data.completed,
   });
 
   revalidatePath("/todos");

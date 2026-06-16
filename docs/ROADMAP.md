@@ -41,14 +41,17 @@
 - [x] **13. Delete todo**
   Delete Server Action + confirmation dialog, with ownership verification.
 
-- [ ] **14. Security review**
+- [x] **14. Complete todos**
+  Complete/incomplete toggle action, with ownership verification, and UI control for changing a todo between open and complete.
+
+- [ ] **15. Security review**
   Audit every Server Action against the 5-step checklist in `AGENTS.md` (auth check, Zod validation, ownership verification, repository-only DB access, typed return). Treat this as an audit pass, not the only enforcement point.
 
-- [ ] **15. UI polish**
+- [ ] **16. UI polish**
   Responsive/mobile pass, accessibility check, loading/empty/error states across all pages.
 
-- [ ] **16. Testing**
+- [ ] **17. Testing**
   Set up the test framework (e.g. Vitest for repositories/schemas/actions, Playwright for auth + todos E2E flows) and write coverage for core flows.
 
-- [ ] **17. Deployment prep**
+- [ ] **18. Deployment prep**
   Environment variables, production migrations, build checks, and deployment platform configuration.

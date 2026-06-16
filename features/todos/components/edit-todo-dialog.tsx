@@ -27,10 +27,20 @@ import {
 } from "@/features/todos/schemas/update-todo.schema";
 import type { Todo } from "@/features/todos/types/todo";
 
-export function EditTodoDialog({ todo }: { todo: Todo }) {
+export function EditTodoDialog({
+  todo,
+  open,
+  onOpenChange,
+}: {
+  todo: Todo;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [formMessage, setFormMessage] = useState<string | null>(null);
+  const dialogOpen = open ?? internalOpen;
+  const setDialogOpen = onOpenChange ?? setInternalOpen;
   const form = useForm<UpdateTodoInput>({
     resolver: zodResolver(updateTodoSchema),
     defaultValues: {
@@ -58,19 +68,21 @@ export function EditTodoDialog({ todo }: { todo: Todo }) {
       return;
     }
 
-    setOpen(false);
+    setDialogOpen(false);
     router.refresh();
     toast.success("Todo updated");
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button type="button" variant="outline" size="sm">
-          <Pencil aria-hidden="true" />
-          Edit
-        </Button>
-      </DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      {open === undefined ? (
+        <DialogTrigger asChild>
+          <Button type="button" variant="outline" size="sm">
+            <Pencil aria-hidden="true" />
+            Edit
+          </Button>
+        </DialogTrigger>
+      ) : null}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit todo</DialogTitle>

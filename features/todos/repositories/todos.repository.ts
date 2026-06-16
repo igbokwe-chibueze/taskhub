@@ -12,6 +12,11 @@ type UpdateTodoFavoriteRepositoryInput = {
   favorite: boolean;
 };
 
+type UpdateTodoCompletedRepositoryInput = {
+  todoId: string;
+  completed: boolean;
+};
+
 type UpdateTodoRepositoryInput = {
   todoId: string;
   title: string;
@@ -66,6 +71,19 @@ export async function updateTodoFavorite(
     },
     data: {
       favorite: input.favorite,
+    },
+  });
+}
+
+export async function updateTodoCompleted(
+  input: UpdateTodoCompletedRepositoryInput,
+): Promise<Todo> {
+  return prisma.todo.update({
+    where: {
+      id: input.todoId,
+    },
+    data: {
+      completed: input.completed,
     },
   });
 }

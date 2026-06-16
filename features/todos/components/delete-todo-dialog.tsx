@@ -18,10 +18,20 @@ import {
 import { deleteTodoAction } from "@/features/todos/actions/todo.actions";
 import type { Todo } from "@/features/todos/types/todo";
 
-export function DeleteTodoDialog({ todo }: { todo: Todo }) {
+export function DeleteTodoDialog({
+  todo,
+  open,
+  onOpenChange,
+}: {
+  todo: Todo;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const dialogOpen = open ?? internalOpen;
+  const setDialogOpen = onOpenChange ?? setInternalOpen;
 
   function handleDelete() {
     startTransition(async () => {
@@ -36,20 +46,22 @@ export function DeleteTodoDialog({ todo }: { todo: Todo }) {
         return;
       }
 
-      setOpen(false);
+      setDialogOpen(false);
       router.refresh();
       toast.success("Todo deleted");
     });
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button type="button" variant="destructive" size="sm">
-          <Trash2 aria-hidden="true" />
-          Delete
-        </Button>
-      </DialogTrigger>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      {open === undefined ? (
+        <DialogTrigger asChild>
+          <Button type="button" variant="destructive" size="sm">
+            <Trash2 aria-hidden="true" />
+            Delete
+          </Button>
+        </DialogTrigger>
+      ) : null}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete todo?</DialogTitle>
@@ -62,7 +74,7 @@ export function DeleteTodoDialog({ todo }: { todo: Todo }) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => setOpen(false)}
+            onClick={() => setDialogOpen(false)}
             disabled={isPending}
           >
             Cancel
