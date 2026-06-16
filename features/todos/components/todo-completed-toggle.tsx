@@ -11,23 +11,31 @@ import { updateTodoCompletedAction } from "@/features/todos/actions/todo.actions
 export function TodoCompletedToggle({
   todoId,
   completed,
+  onCompletedChange,
 }: {
   todoId: string;
   completed: boolean;
+  onCompletedChange?: (completed: boolean) => void;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const Icon = completed ? CheckCircle2 : Circle;
 
   function handleToggle() {
+    const nextCompleted = !completed;
+
     startTransition(async () => {
-      const nextCompleted = !completed;
+      // Optimistically update the surrounding row before the Server Action
+      // resolves so the checkbox, title style, and status badge all feel instant.
+      onCompletedChange?.(nextCompleted);
+
       const result = await updateTodoCompletedAction({
         todoId,
         completed: nextCompleted,
       });
 
       if (!result.ok) {
+        onCompletedChange?.(completed);
         toast.error("Todo status was not updated", {
           description: result.message,
         });

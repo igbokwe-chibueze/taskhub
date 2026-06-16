@@ -1,4 +1,4 @@
-import { Inbox, LayoutDashboard, Star } from "lucide-react";
+import { CheckCircle2, Inbox, LayoutDashboard, Star } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { Badge } from "@/components/ui/badge";
@@ -50,6 +50,7 @@ export async function TodosView() {
   // to this session user so no other user's todos can be returned.
   const todos = await getTodosByUserId(session.user.id);
   const favoriteTodos = todos.filter((todo) => todo.favorite);
+  const completedTodos = todos.filter((todo) => todo.completed);
 
   return (
     <main className="flex flex-1 flex-col bg-muted/30">
@@ -82,6 +83,10 @@ export async function TodosView() {
               <TabsTrigger value="favorites">
                 <Star aria-hidden="true" />
                 Favorites
+              </TabsTrigger>
+              <TabsTrigger value="completed">
+                <CheckCircle2 aria-hidden="true" />
+                Completed
               </TabsTrigger>
             </TabsList>
           </div>
@@ -124,6 +129,27 @@ export async function TodosView() {
               <EmptyTodosState
                 title="No favorite todos yet"
                 description="Mark important todos as favorites from the All Todos tab, then they will appear here."
+              />
+            )}
+          </TabsContent>
+
+          <TabsContent value="completed">
+            <Card className="mb-4 bg-background">
+              <CardHeader>
+                <CardTitle>Completed</CardTitle>
+                <CardDescription>
+                  {completedTodos.length === 1
+                    ? "1 completed todo in your private workspace."
+                    : `${completedTodos.length} completed todos in your private workspace.`}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            {completedTodos.length > 0 ? (
+              <TodosList todos={completedTodos} />
+            ) : (
+              <EmptyTodosState
+                title="No completed todos yet"
+                description="Mark todos complete from any tab, then your finished work will appear here."
               />
             )}
           </TabsContent>
