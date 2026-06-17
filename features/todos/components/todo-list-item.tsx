@@ -34,7 +34,7 @@ export function TodoListItem({ todo }: { todo: Todo }) {
       <CardHeader>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="grid grid-cols-[auto_minmax(0,1fr)] items-start gap-2">
               <TodoCompletedToggle
                 todoId={todo.id}
                 completed={completed}
@@ -42,20 +42,20 @@ export function TodoListItem({ todo }: { todo: Todo }) {
               />
               <span
                 className={cn(
-                  "truncate",
+                  "min-w-0 break-words leading-6 [overflow-wrap:anywhere]",
                   completed && "text-muted-foreground line-through",
                 )}
               >
                 {todo.title}
               </span>
             </CardTitle>
-            <CardDescription className="mt-2 flex items-center gap-1.5">
+            <CardDescription className="mt-2 flex flex-wrap items-center gap-1.5">
               <CalendarDays aria-hidden="true" className="size-3.5" />
               Created {dateFormatter.format(todo.createdAt)}
             </CardDescription>
           </div>
 
-          <div className="flex shrink-0 flex-wrap gap-2">
+          <div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
             <Badge variant="outline">{completed ? "Complete" : "Open"}</Badge>
             <TodoFavoriteToggle todoId={todo.id} favorite={todo.favorite} />
             <TodoActionsMenu todo={todo} />

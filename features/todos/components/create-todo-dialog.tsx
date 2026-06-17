@@ -78,7 +78,11 @@ export function CreateTodoDialog() {
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          noValidate
+          aria-busy={form.formState.isSubmitting}
+        >
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="todo-title">Title</FieldLabel>

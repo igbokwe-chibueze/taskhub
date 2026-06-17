@@ -36,7 +36,7 @@ export function UsersDirectory({ users }: UsersDirectoryProps) {
                 <CardTitle className="truncate">{user.displayName}</CardTitle>
                 <CardDescription>Joined {dateFormatter.format(user.joinedAt)}</CardDescription>
               </div>
-              <Badge variant="secondary">
+              <Badge variant="secondary" className="shrink-0">
                 {user.todoCount} {user.todoCount === 1 ? "todo" : "todos"}
               </Badge>
             </div>

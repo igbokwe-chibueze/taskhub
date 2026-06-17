@@ -46,9 +46,10 @@ export function TodoFavoriteToggle({
       onClick={handleToggle}
       disabled={isPending}
       aria-pressed={favorite}
+      aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
     >
       <Star aria-hidden="true" className={favorite ? "fill-current" : undefined} />
-      {favorite ? "Favorited" : "Favorite"}
+      <span className="hidden sm:inline">{favorite ? "Favorited" : "Favorite"}</span>
     </Button>
   );
 }

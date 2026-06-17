@@ -325,19 +325,24 @@ npx prisma migrate reset
 
 ## 14. Testing Instructions `[CONFIRM]`
 
-No test framework has been finalized yet. Recommended for this stack:
+Vitest is configured for fast unit/integration coverage of schemas,
+repositories, and Server Actions.
 
-- **Unit / integration:** Vitest or Jest for repositories, schemas, and Server Actions.
-- **E2E:** Playwright for auth flows and the todos dashboard.
-
-Once configured, document the run command here, e.g.:
+Run the test suite with:
 
 ```bash
 npm run test
-npm run test:e2e
 ```
 
-Any new Server Action or repository function should include corresponding tests once the test framework is in place.
+Use watch mode during focused test development:
+
+```bash
+npm run test:watch
+```
+
+Any new Server Action, repository function, or schema should include
+corresponding Vitest coverage. Playwright is still the recommended future E2E
+layer for browser-level auth flows and the todos dashboard.
 
 ---
 

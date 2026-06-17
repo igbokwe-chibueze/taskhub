@@ -21,6 +21,7 @@ export type UpdateUserPreferencesActionResult =
 export async function updateUserPreferencesAction(
   input: UpdateUserPreferencesInput,
 ): Promise<UpdateUserPreferencesActionResult> {
+  // 1. Verify authentication before mutating account-owned preferences.
   // Preferences are account-owned state, so the user id always comes from the
   // authenticated session rather than from the client payload.
   const session = await getCurrentSession();
@@ -32,6 +33,7 @@ export async function updateUserPreferencesAction(
     };
   }
 
+  // 2. Validate the theme payload against the only supported values.
   const parsedInput = updateUserPreferencesSchema.safeParse(input);
 
   if (!parsedInput.success) {
@@ -41,6 +43,9 @@ export async function updateUserPreferencesAction(
     };
   }
 
+  // 3. Ownership is established from the session because the client never sends
+  // userId. This prevents one account from targeting another account's settings.
+  // 4. The users repository is the only layer that writes preference fields.
   await updateUserPreferences({
     userId: session.user.id,
     themeColor: parsedInput.data.themeColor,
@@ -49,6 +54,7 @@ export async function updateUserPreferencesAction(
 
   revalidatePath("/");
 
+  // 5. Return a typed result so the client can show deterministic feedback.
   return {
     ok: true,
   };

@@ -70,7 +70,7 @@ export function DeleteTodoDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter>
+        <DialogFooter aria-busy={isPending}>
           <Button
             type="button"
             variant="outline"
@@ -84,6 +84,7 @@ export function DeleteTodoDialog({
             variant="destructive"
             onClick={handleDelete}
             disabled={isPending}
+            aria-live="polite"
           >
             {isPending ? "Deleting..." : "Delete todo"}
           </Button>
