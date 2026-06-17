@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 export function SignUpForm() {
   const [formMessage, setFormMessage] = useState<string | null>(null);
+  const formMessageId = "sign-up-form-error";
   const form = useForm<SignUpInput>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -51,7 +52,11 @@ export function SignUpForm() {
         <CardDescription>Start organizing your work in TaskHub.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          noValidate
+          aria-busy={form.formState.isSubmitting}
+        >
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="name">Name</FieldLabel>
@@ -60,6 +65,7 @@ export function SignUpForm() {
                 type="text"
                 autoComplete="name"
                 aria-invalid={!!form.formState.errors.name}
+                disabled={form.formState.isSubmitting}
                 {...form.register("name")}
               />
               <FieldError errors={[form.formState.errors.name]} />
@@ -71,6 +77,7 @@ export function SignUpForm() {
                 type="email"
                 autoComplete="email"
                 aria-invalid={!!form.formState.errors.email}
+                disabled={form.formState.isSubmitting}
                 {...form.register("email")}
               />
               <FieldError errors={[form.formState.errors.email]} />
@@ -82,6 +89,7 @@ export function SignUpForm() {
                 type="password"
                 autoComplete="new-password"
                 aria-invalid={!!form.formState.errors.password}
+                disabled={form.formState.isSubmitting}
                 {...form.register("password")}
               />
               <FieldError errors={[form.formState.errors.password]} />
@@ -93,11 +101,12 @@ export function SignUpForm() {
                 type="password"
                 autoComplete="new-password"
                 aria-invalid={!!form.formState.errors.confirmPassword}
+                disabled={form.formState.isSubmitting}
                 {...form.register("confirmPassword")}
               />
               <FieldError errors={[form.formState.errors.confirmPassword]} />
             </Field>
-            {formMessage ? <FieldError>{formMessage}</FieldError> : null}
+            {formMessage ? <FieldError id={formMessageId}>{formMessage}</FieldError> : null}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? "Creating account..." : "Create account"}
             </Button>

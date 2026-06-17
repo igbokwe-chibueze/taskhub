@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 export function SignInForm() {
   const [formMessage, setFormMessage] = useState<string | null>(null);
+  const formMessageId = "sign-in-form-error";
   const form = useForm<SignInInput>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -49,7 +50,11 @@ export function SignInForm() {
         <CardDescription>Use your TaskHub account to continue.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          noValidate
+          aria-busy={form.formState.isSubmitting}
+        >
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -58,6 +63,7 @@ export function SignInForm() {
                 type="email"
                 autoComplete="email"
                 aria-invalid={!!form.formState.errors.email}
+                disabled={form.formState.isSubmitting}
                 {...form.register("email")}
               />
               <FieldError errors={[form.formState.errors.email]} />
@@ -69,11 +75,12 @@ export function SignInForm() {
                 type="password"
                 autoComplete="current-password"
                 aria-invalid={!!form.formState.errors.password}
+                disabled={form.formState.isSubmitting}
                 {...form.register("password")}
               />
               <FieldError errors={[form.formState.errors.password]} />
             </Field>
-            {formMessage ? <FieldError>{formMessage}</FieldError> : null}
+            {formMessage ? <FieldError id={formMessageId}>{formMessage}</FieldError> : null}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? "Signing in..." : "Sign in"}
             </Button>

@@ -91,7 +91,11 @@ export function EditTodoDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          noValidate
+          aria-busy={form.formState.isSubmitting}
+        >
           <FieldGroup>
             <input type="hidden" {...form.register("todoId")} />
 

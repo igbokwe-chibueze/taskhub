@@ -26,35 +26,38 @@ export function SiteNavbar({ session, preferences }: SiteNavbarProps) {
           <span className="truncate">TaskHub</span>
         </Link>
 
-        <nav aria-label="Main navigation" className="flex min-w-0 items-center gap-2">
+        <nav aria-label="Main navigation" className="flex min-w-0 items-center gap-1.5 sm:gap-2">
           {session ? (
             <>
               <span className="hidden max-w-48 truncate text-sm text-muted-foreground sm:inline">
                 {userLabel}
               </span>
-              <Button asChild variant="ghost">
-                <Link href="/todos">Dashboard</Link>
+              <Button asChild variant="ghost" className="px-2 sm:px-2.5">
+                <Link href="/todos" aria-label="Dashboard">
+                  <span className="hidden sm:inline">Dashboard</span>
+                  <span aria-hidden="true" className="sm:hidden">Todos</span>
+                </Link>
               </Button>
               <ThemePreferenceControls preferences={preferences} />
-              <Button asChild variant="outline">
-                <Link href="/auth/sign-out">
+              <Button asChild variant="outline" size="icon-sm" className="sm:h-8 sm:w-auto sm:px-2.5">
+                <Link href="/auth/sign-out" aria-label="Sign out">
                   <LogOut aria-hidden="true" />
-                  Sign out
+                  <span className="sr-only sm:not-sr-only">Sign out</span>
                 </Link>
               </Button>
             </>
           ) : (
             <>
-              <Button asChild variant="ghost">
-                <Link href="/auth/sign-in">
+              <Button asChild variant="ghost" size="icon-sm" className="sm:h-8 sm:w-auto sm:px-2.5">
+                <Link href="/auth/sign-in" aria-label="Sign in">
                   <LogIn aria-hidden="true" />
-                  Sign in
+                  <span className="sr-only sm:not-sr-only">Sign in</span>
                 </Link>
               </Button>
-              <Button asChild>
-                <Link href="/auth/sign-up">
+              <Button asChild size="icon-sm" className="sm:h-8 sm:w-auto sm:px-2.5">
+                <Link href="/auth/sign-up" aria-label="Sign up">
                   <UserPlus aria-hidden="true" />
-                  Sign up
+                  <span className="sr-only sm:not-sr-only">Sign up</span>
                 </Link>
               </Button>
             </>

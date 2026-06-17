@@ -47,13 +47,13 @@
 - [x] **15. User themes**
   Per-user color theme preferences scoped to private app areas, plus a light/dark mode toggle persisted to the authenticated user and applied on first render.
 
-- [ ] **16. Security review**
+- [x] **16. Security review**
   Audit every Server Action against the 5-step checklist in `AGENTS.md` (auth check, Zod validation, ownership verification, repository-only DB access, typed return). Treat this as an audit pass, not the only enforcement point.
 
-- [ ] **17. UI polish**
+- [x] **17. UI polish**
   Responsive/mobile pass, accessibility check, loading/empty/error states across all pages.
 
-- [ ] **18. Testing**
+- [x] **18. Testing**
   Set up the test framework (e.g. Vitest for repositories/schemas/actions, Playwright for auth + todos E2E flows) and write coverage for core flows.
 
 - [ ] **19. Deployment prep**
