@@ -8,3 +8,8 @@ export type UserPreferences = {
   themeColor: UserThemeColor;
   themeMode: UserThemeMode;
 };
+
+export const defaultUserPreferences: UserPreferences = {
+  themeColor: "neutral",
+  themeMode: "light",
+};

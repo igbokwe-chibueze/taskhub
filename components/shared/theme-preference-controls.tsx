@@ -50,10 +50,13 @@ export function ThemePreferenceControls({
   const [themeMode, setThemeMode] = useState(preferences.themeMode);
 
   function applyTheme(nextPreferences: UserPreferences) {
-    document.documentElement.setAttribute(
-      "data-color-theme",
-      nextPreferences.themeColor,
-    );
+    if (document.body.hasAttribute("data-private-theme-active")) {
+      document.body.setAttribute("data-color-theme", nextPreferences.themeColor);
+    }
+
+    document.querySelectorAll("[data-user-theme-scope]").forEach((element) => {
+      element.setAttribute("data-color-theme", nextPreferences.themeColor);
+    });
     setTheme(nextPreferences.themeMode);
   }
 

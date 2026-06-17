@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
+import { PrivateThemeScope } from "@/components/shared/private-theme-scope";
 import { SiteNavbar } from "@/components/shared/site-navbar";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { getCurrentSession } from "@/lib/auth/session";
 import { getUserPreferences } from "@/features/users/repositories/users.repository";
-import type { UserPreferences } from "@/features/users/types/user-preferences";
+import { defaultUserPreferences } from "@/features/users/types/user-preferences";
 
 import "./globals.css";
 
@@ -25,11 +26,6 @@ export const metadata: Metadata = {
   description: "A focused todo workspace for organizing personal tasks.",
 };
 
-const defaultPreferences: UserPreferences = {
-  themeColor: "neutral",
-  themeMode: "light",
-};
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -37,13 +33,12 @@ export default async function RootLayout({
 }>) {
   const session = await getCurrentSession();
   const preferences = session
-    ? (await getUserPreferences(session.user.id)) ?? defaultPreferences
-    : defaultPreferences;
+    ? (await getUserPreferences(session.user.id)) ?? defaultUserPreferences
+    : defaultUserPreferences;
 
   return (
     <html
       lang="en"
-      data-color-theme={preferences.themeColor}
       className={`${geistSans.variable} ${geistMono.variable} ${preferences.themeMode} h-full antialiased`}
       suppressHydrationWarning
     >
@@ -51,6 +46,7 @@ export default async function RootLayout({
           should share the same auth-aware navigation. */}
       <body className="flex min-h-full flex-col">
         <ThemeProvider>
+          <PrivateThemeScope preferences={preferences} />
           <SiteNavbar session={session} preferences={preferences} />
           {children}
           {/* Mount one global toaster so any client component can announce

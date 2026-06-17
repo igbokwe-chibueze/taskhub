@@ -45,7 +45,7 @@
   Complete/incomplete toggle action, with ownership verification, optimistic UI feedback, and a Completed tab for finished todos.
 
 - [x] **15. User themes**
-  Per-user color theme preferences and light/dark mode toggle, persisted to the authenticated user and applied on first render.
+  Per-user color theme preferences scoped to private app areas, plus a light/dark mode toggle persisted to the authenticated user and applied on first render.
 
 - [ ] **16. Security review**
   Audit every Server Action against the 5-step checklist in `AGENTS.md` (auth check, Zod validation, ownership verification, repository-only DB access, typed return). Treat this as an audit pass, not the only enforcement point.
