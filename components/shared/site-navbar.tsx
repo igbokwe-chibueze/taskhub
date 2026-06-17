@@ -1,13 +1,19 @@
 import { CheckSquare, LogIn, LogOut, UserPlus } from "lucide-react";
 import Link from "next/link";
 
-import { getCurrentSession } from "@/lib/auth/session";
 import { Button } from "@/components/ui/button";
+import { ThemePreferenceControls } from "@/components/shared/theme-preference-controls";
+import type { getCurrentSession } from "@/lib/auth/session";
+import type { UserPreferences } from "@/features/users/types/user-preferences";
 
-export async function SiteNavbar() {
-  // This stays a server component so the first render already reflects the
-  // authenticated state without a client-side session loading flash.
-  const session = await getCurrentSession();
+type SiteNavbarProps = {
+  session: Awaited<ReturnType<typeof getCurrentSession>>;
+  preferences: UserPreferences;
+};
+
+export function SiteNavbar({ session, preferences }: SiteNavbarProps) {
+  // Session and preferences are read in the root layout so the first render
+  // already reflects the authenticated state and user theme without a flash.
   const userLabel = session?.user.name || session?.user.email;
 
   return (
@@ -29,6 +35,7 @@ export async function SiteNavbar() {
               <Button asChild variant="ghost">
                 <Link href="/todos">Dashboard</Link>
               </Button>
+              <ThemePreferenceControls preferences={preferences} />
               <Button asChild variant="outline">
                 <Link href="/auth/sign-out">
                   <LogOut aria-hidden="true" />

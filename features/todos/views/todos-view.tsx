@@ -13,6 +13,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CreateTodoDialog } from "@/features/todos/components/create-todo-dialog";
 import { TodosList } from "@/features/todos/components/todos-list";
 import { getTodosByUserId } from "@/features/todos/repositories/todos.repository";
+import { getUserPreferences } from "@/features/users/repositories/users.repository";
+import { defaultUserPreferences } from "@/features/users/types/user-preferences";
 import { getCurrentSession } from "@/lib/auth/session";
 
 function EmptyTodosState({
@@ -51,9 +53,15 @@ export async function TodosView() {
   const todos = await getTodosByUserId(session.user.id);
   const favoriteTodos = todos.filter((todo) => todo.favorite);
   const completedTodos = todos.filter((todo) => todo.completed);
+  const preferences =
+    (await getUserPreferences(session.user.id)) ?? defaultUserPreferences;
 
   return (
-    <main className="flex flex-1 flex-col bg-muted/30">
+    <main
+      data-user-theme-scope
+      data-color-theme={preferences.themeColor}
+      className="flex flex-1 flex-col bg-muted/30"
+    >
       <section className="border-b bg-background">
         <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
           <Badge variant="outline" className="mb-4 bg-background">
